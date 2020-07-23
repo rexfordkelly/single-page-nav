@@ -43,38 +43,41 @@ if (typeof Object.create !== 'function') {
         },
 
         handleClick: function(e) {
-            var self  = this,
-                link  = e.currentTarget,
-                $elem = $(link.hash);
+            
+            if(!t.target.href.startsWith('http')){
+                var self  = this,
+                    link  = e.currentTarget,
+                    $elem = $(link.hash);
 
-            e.preventDefault();             
+                e.preventDefault();             
 
-            if ($elem.length) { // Make sure the target elem exists
+                if ($elem.length) { // Make sure the target elem exists
 
-                // Prevent active link from cycling during the scroll
-                self.clearTimer();
+                    // Prevent active link from cycling during the scroll
+                    self.clearTimer();
 
-                // Before scrolling starts
-                if (typeof self.options.beforeStart === 'function') {
-                    self.options.beforeStart();
+                    // Before scrolling starts
+                    if (typeof self.options.beforeStart === 'function') {
+                        self.options.beforeStart();
+                    }
+
+                    self.setActiveLink(link.hash);
+                    
+                    self.scrollTo($elem, function() { 
+
+                        if (self.options.updateHash && history.pushState) {
+                            history.pushState(null,null, link.hash);
+                        }
+
+                        self.setTimer();
+
+                        // After scrolling ends
+                        if (typeof self.options.onComplete === 'function') {
+                            self.options.onComplete();
+                        }
+                    });                            
                 }
-
-                self.setActiveLink(link.hash);
-                
-                self.scrollTo($elem, function() { 
-
-                    if (self.options.updateHash && history.pushState) {
-                        history.pushState(null,null, link.hash);
-                    }
-
-                    self.setTimer();
-
-                    // After scrolling ends
-                    if (typeof self.options.onComplete === 'function') {
-                        self.options.onComplete();
-                    }
-                });                            
-            }     
+            }  
         },
         
         scrollTo: function($elem, callback) {
