@@ -44,7 +44,7 @@ if (typeof Object.create !== 'function') {
 
         handleClick: function(e) {
             
-            if( (t.target.href.replace( document.URL, '')).replace(location.protocol+'//', '')[#] ){
+            if( (t.target.href.replace( document.URL, '')).replace(location.protocol+'//', '')[0] == '#'){
                 var self  = this,
                     link  = e.currentTarget,
                     $elem = $(link.hash);
