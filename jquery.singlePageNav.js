@@ -44,7 +44,7 @@ if (typeof Object.create !== 'function') {
 
         handleClick: function(e) {
             
-            if(!t.target.href.startsWith('http')){
+            if( (t.target.href.replace( document.URL, '')).replace(location.protocol+'//', '')[#] ){
                 var self  = this,
                     link  = e.currentTarget,
                     $elem = $(link.hash);
